@@ -1,13 +1,16 @@
 package com.pluralsight;
 
+import javax.sound.sampled.Line;
+import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FinancialTracker {
 
-    private static ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+    private static final ArrayList<Transaction> transactions = new ArrayList<Transaction>();
     private static final String FILE_NAME = "transactions.csv";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String TIME_FORMAT = "HH:mm:ss";
@@ -52,14 +55,21 @@ public class FinancialTracker {
     }
 
     public static void loadTransactions(String fileName) {
-        // This method should load transactions from a file with the given file name.
-        // If the file does not exist, it should be created.
-        // The transactions should be stored in the `transactions` ArrayList.
-        // Each line of the file represents a single transaction in the following format:
-        // <date>,<time>,<vendor>,<type>,<amount>
-        // For example: 2023-04-29,13:45:00,Amazon,PAYMENT,29.99
-        // After reading all the transactions, the file should be closed.
-        // If any errors occur, an appropriate error message should be displayed.
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String[] tokens = line.split("//|;");
+                LocalDate date = LocalDate.parse(tokens[0], DATE_FORMATTER);
+                LocalTime time = LocalTime.parse(tokens[1], TIME_FORMATTER);
+                String discription = tokens[2];
+                String vendor = tokens[3];
+            }
+        } catch (Exception e) {
+            System.out.println("Error");
+        }
     }
 
     private static void addDeposit(Scanner scanner) {
