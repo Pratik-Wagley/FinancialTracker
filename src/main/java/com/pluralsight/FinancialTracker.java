@@ -98,11 +98,11 @@ public class FinancialTracker {
             if (amount > 0) {
                 Transaction deposit = new Transaction(date, time, description, vendor, amount);
                 transactions.add(deposit);
-                try (BufferedWriter bw = new BufferedWriter()) {
+                BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME));
 
-                }
 
                 //buffer write into csv file
+                //write to the file if line = null
 
          } else {
                 System.out.println("Deposit must be a positive number!");
@@ -143,6 +143,7 @@ public class FinancialTracker {
             if (amount < 0) {
                 Transaction payment = new Transaction(date, time, description, vendor, amount);
                 transactions.add(payment);
+                BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME));
                 // buff write to the csv file
 
             } else {
