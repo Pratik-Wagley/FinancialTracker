@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public class FinancialTracker {
 
-    private static ArrayList<Transaction> transactions = new ArrayList();
+    private static final ArrayList<Transaction> transactions = new ArrayList<Transaction>();
     private static final String FILE_NAME = "transactions.csv";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String TIME_FORMAT = "HH:mm:ss";
@@ -99,14 +99,13 @@ public class FinancialTracker {
         scanner.nextLine();
 
 
-        try
-        {
+        try {
             if (amount > 0) {
                 Transaction deposit = new Transaction(date, time, description, vendor, amount);
                 transactions.add(deposit);
                 BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME, true));
                 String line;
-                for(Transaction transaction: transactions) {
+                for (Transaction transaction : transactions) {
                     String formattedTrans = String.format("%s|%s|%s|%s|%.2f", transaction.getDate(), transaction.getTime(),
                             transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
                     bw.write(formattedTrans);
@@ -116,13 +115,11 @@ public class FinancialTracker {
                 }
             }
 
-                //buffer write into csv file
-                //write to the file if line = null
+            //buffer write into csv file
+            //write to the file if line = null
         } catch (Exception e) {
             System.out.println("Invalid amount format. Please enter a valid number.");
         }
-
-
 
 
         // This method should prompt the user to enter the date, time, vendor, and amount of a deposit.
@@ -157,7 +154,7 @@ public class FinancialTracker {
                 transactions.add(payment);
                 BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME, true));
                 String line;
-                for(Transaction transaction: transactions) {
+                for (Transaction transaction : transactions) {
                     String formattedTrans = String.format("%s|%s|%s|%s|%.2f", transaction.getDate(), transaction.getTime(),
                             transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
                     bw.write(formattedTrans);
@@ -232,12 +229,12 @@ public class FinancialTracker {
     }
 
     private static void displayPayments() {
-            System.out.println("Payment: ");
-            for (Transaction payment : transactions) {
-                System.out.println(payment);
-                // This method should display a table of all payments in the `transactions` ArrayList.
-                // The table should have columns for date, time, vendor, and amount.
-            }
+        System.out.println("Payment: ");
+        for (Transaction payment : transactions) {
+            System.out.println(payment);
+            // This method should display a table of all payments in the `transactions` ArrayList.
+            // The table should have columns for date, time, vendor, and amount.
+        }
     }
 
     private static void reportsMenu(Scanner scanner) {
@@ -256,22 +253,31 @@ public class FinancialTracker {
 
             switch (input) {
                 case "1":
-                    for (Transaction transaction : transactions) {
-
-                    }
-                    // Generate a report for all transactions within the current month,
-                    // including the date, vendor, and amount for each transaction.
+                    LocalDate today = LocalDate.now();
+                    LocalDate startDate = today.withDayOfMonth(1);
+                    LocalDate endDate = LocalDate.now();
+                    filterTransactionsByDate(startDate, endDate);
+                    break;
+                // Generate a report for all transactions within the current month,
+                // including the date, vendor, and amount for each transaction.
                 case "2":
+
+                    // filterTransactionsByDate();
                     // Generate a report for all transactions within the previous month,
                     // including the date, vendor, and amount for each transaction.
                 case "3":
+                    // filterTransactionsByDate();
                     // Generate a report for all transactions within the current year,
                     // including the date, vendor, and amount for each transaction.
 
                 case "4":
+                    // filterTransactionsByDate();
                     // Generate a report for all transactions within the previous year,
                     // including the date, vendor, and amount for each transaction.
                 case "5":
+                    System.out.println("Enter the vendor: ");
+                    String vendor = scanner.nextLine();
+                    filterTransactionsByVendor(vendor);
                     // Prompt the user to enter a vendor name, then generate a report for all transactions
                     // with that vendor, including the date, vendor, and amount for each transaction.
                 case "0":
@@ -291,7 +297,7 @@ public class FinancialTracker {
             boolean afterDate = !transaction.getDate().isBefore(startDate);
             boolean beforeDate = !transaction.getDate().isAfter(endDate);
 
-            if(afterDate && beforeDate) {
+            if (afterDate && beforeDate) {
                 double positiveNum = Math.abs(transaction.getAmount());
                 String formattedTrans = String.format("%s|%s|%s|%s|%.2f", transaction.getDate(), transaction.getTime(),
                         transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
