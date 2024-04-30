@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 public class FinancialTracker {
@@ -21,6 +22,8 @@ public class FinancialTracker {
 
     public static void main(String[] args) {
         loadTransactions(FILE_NAME);
+
+
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
@@ -59,17 +62,20 @@ public class FinancialTracker {
     public static void loadTransactions(String fileName) {
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader(fileName));
+            BufferedReader br = new BufferedReader(new FileReader(FILE_NAME));
             String line;
 
             while ((line = br.readLine()) != null) {
-                String[] tokens = line.split("//|;");
-                LocalDate date = LocalDate.parse(tokens[0], DATE_FORMATTER);
-                LocalTime time = LocalTime.parse(tokens[1], TIME_FORMATTER);
-                String description = tokens[2];
-                String vendor = tokens[3];
-                double price = Double.parseDouble(tokens[4]);
-                transactions.add(new Transaction(date, time, description, vendor, price));
+                String[] tokens = line.split("\\|");
+                if (tokens.length == 5) {
+                    LocalDate date = LocalDate.parse(tokens[0], DATE_FORMATTER);
+                    LocalTime time = LocalTime.parse(tokens[1], TIME_FORMATTER);
+                    String description = tokens[2];
+                    String vendor = tokens[3];
+                    double price = Double.parseDouble(tokens[4]);
+                    transactions.add(new Transaction(date, time, description, vendor, price));
+                }
+
             }
             br.close();
         } catch (Exception e) {
@@ -98,18 +104,24 @@ public class FinancialTracker {
             if (amount > 0) {
                 Transaction deposit = new Transaction(date, time, description, vendor, amount);
                 transactions.add(deposit);
-                BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME));
+                BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME, true));
+                String line;
+                for(Transaction transaction: transactions) {
+                    String formattedTrans = String.format("%s|%s|%s|%s|%.2f", transaction.getDate(), transaction.getTime(),
+                            transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
+                    bw.write(formattedTrans);
+                    bw.newLine();
 
+
+                }
+            }
 
                 //buffer write into csv file
                 //write to the file if line = null
-
-         } else {
-                System.out.println("Deposit must be a positive number!");
-            }
         } catch (Exception e) {
             System.out.println("Invalid amount format. Please enter a valid number.");
         }
+
 
 
 
@@ -143,12 +155,18 @@ public class FinancialTracker {
             if (amount < 0) {
                 Transaction payment = new Transaction(date, time, description, vendor, amount);
                 transactions.add(payment);
-                BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME));
-                // buff write to the csv file
+                BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME, true));
+                String line;
+                for(Transaction transaction: transactions) {
+                    String formattedTrans = String.format("%s|%s|%s|%s|%.2f", transaction.getDate(), transaction.getTime(),
+                            transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
+                    bw.write(formattedTrans);
+                    bw.newLine();
 
-            } else {
-                System.out.println("Payment must be a negative number!");
+
+                }
             }
+
         } catch (Exception e) {
             System.out.println("Invalid amount format. Please enter a valid number.");
         }
@@ -197,21 +215,29 @@ public class FinancialTracker {
     private static void displayLedger() {
         System.out.println("Ledger: ");
         for (Transaction transaction : transactions) {
+
             System.out.println(transaction);
         }
-
         // This method should display a table of all transactions in the `transactions` ArrayList.
         // The table should have columns for date, time, vendor, type, and amount.
     }
 
     private static void displayDeposits() {
-        // This method should display a table of all deposits in the `transactions` ArrayList.
-        // The table should have columns for date, time, vendor, and amount.
+        System.out.println("Deposit: ");
+        for (Transaction deposit : transactions) {
+            System.out.println(deposit);
+            // This method should display a table of all deposits in the `transactions` ArrayList.
+            // The table should have columns for date, time, vendor, and amount.
+        }
     }
 
     private static void displayPayments() {
-        // This method should display a table of all payments in the `transactions` ArrayList.
-        // The table should have columns for date, time, vendor, and amount.
+            System.out.println("Payment: ");
+            for (Transaction payment : transactions) {
+                System.out.println(payment);
+                // This method should display a table of all payments in the `transactions` ArrayList.
+                // The table should have columns for date, time, vendor, and amount.
+            }
     }
 
     private static void reportsMenu(Scanner scanner) {
@@ -230,6 +256,9 @@ public class FinancialTracker {
 
             switch (input) {
                 case "1":
+                    for (Transaction transaction : transactions) {
+
+                    }
                     // Generate a report for all transactions within the current month,
                     // including the date, vendor, and amount for each transaction.
                 case "2":
@@ -247,6 +276,7 @@ public class FinancialTracker {
                     // with that vendor, including the date, vendor, and amount for each transaction.
                 case "0":
                     running = false;
+                    break;
                 default:
                     System.out.println("Invalid option");
                     break;
@@ -256,6 +286,24 @@ public class FinancialTracker {
 
 
     private static void filterTransactionsByDate(LocalDate startDate, LocalDate endDate) {
+        boolean foundTransactions = false;
+        for (Transaction transaction : transactions) {
+            boolean afterDate = !transaction.getDate().isBefore(startDate);
+            boolean beforeDate = !transaction.getDate().isAfter(endDate);
+
+            if(afterDate && beforeDate) {
+                double positiveNum = Math.abs(transaction.getAmount());
+                String formattedTrans = String.format("%s|%s|%s|%s|%.2f", transaction.getDate(), transaction.getTime(),
+                        transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
+                System.out.println(formattedTrans);
+                foundTransactions = true;
+            }
+            if (!foundTransactions) {
+                System.out.println("No results, please try again!");
+            }
+
+        }
+
         // This method filters the transactions by date and prints a report to the console.
         // It takes two parameters: startDate and endDate, which represent the range of dates to filter by.
         // The method loops through the transactions list and checks each transaction's date against the date range.
@@ -264,6 +312,18 @@ public class FinancialTracker {
     }
 
     private static void filterTransactionsByVendor(String vendor) {
+        boolean foundVendor = false;
+        for (Transaction transaction : transactions) {
+            if (vendor.equals(transaction.getVendor())) {
+                String formattedTrans = String.format("%s|%s|%s|%s|%.2f", transaction.getDate(), transaction.getTime(),
+                        transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
+                System.out.println(formattedTrans);
+            } else {
+                System.out.println("No vendors with that name found, please try again!");
+            }
+        }
+
+
         // This method filters the transactions by vendor and prints a report to the console.
         // It takes one parameter: vendor, which represents the name of the vendor to filter by.
         // The method loops through the transactions list and checks each transaction's vendor name against the specified vendor name.
