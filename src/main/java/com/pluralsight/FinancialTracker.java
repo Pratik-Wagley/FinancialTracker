@@ -261,17 +261,26 @@ public class FinancialTracker {
                 // Generate a report for all transactions within the current month,
                 // including the date, vendor, and amount for each transaction.
                 case "2":
-
-                    // filterTransactionsByDate();
+                    LocalDate lastMonth = LocalDate.now().minusMonths(1);
+                    LocalDate startDate1 = lastMonth.withDayOfMonth(1);
+                    LocalDate endDate1 = lastMonth.withDayOfMonth(lastMonth.lengthOfMonth());
+                    filterTransactionsByDate(startDate1, endDate1);
                     // Generate a report for all transactions within the previous month,
                     // including the date, vendor, and amount for each transaction.
                 case "3":
-                    // filterTransactionsByDate();
+                    LocalDate today1 = LocalDate.now();
+                    LocalDate startOfYear = today1.withDayOfYear(1);
+                    LocalDate endOfYear = today1.withDayOfYear(today1.lengthOfYear());
+                    filterTransactionsByDate(startOfYear, endOfYear);
                     // Generate a report for all transactions within the current year,
                     // including the date, vendor, and amount for each transaction.
 
                 case "4":
-                    // filterTransactionsByDate();
+                    LocalDate lastYear = LocalDate.now().minusYears(1);
+                    LocalDate startOfLastYear = lastYear.withDayOfYear(1);
+                    LocalDate endOfLastYear = lastYear.withDayOfYear(lastYear.lengthOfYear());
+
+                    filterTransactionsByDate(startOfLastYear, endOfLastYear);
                     // Generate a report for all transactions within the previous year,
                     // including the date, vendor, and amount for each transaction.
                 case "5":
@@ -324,7 +333,8 @@ public class FinancialTracker {
                 String formattedTrans = String.format("%s|%s|%s|%s|%.2f", transaction.getDate(), transaction.getTime(),
                         transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
                 System.out.println(formattedTrans);
-            } else {
+                foundVendor = true;
+            } if (!foundVendor){
                 System.out.println("No vendors with that name found, please try again!");
             }
         }
