@@ -105,16 +105,15 @@ public class FinancialTracker {
                 Transaction deposit = new Transaction(date, time, description, vendor, amount);
                 transactions.add(deposit);
                 BufferedWriter bw = new BufferedWriter(new FileWriter("transactions.csv", true));
-                String line;
-                for (Transaction transaction : transactions) {
-                    String formattedTrans = String.format("%s|%s|%s|%s|%.2f", transaction.getDate(), transaction.getTime(),
-                            transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
-                    bw.write(formattedTrans);
-                    bw.newLine();
-                    bw.close();
 
-                }
+                String formattedTrans = String.format("%s|%s|%s|%s|%.2f", deposit.getDate(), deposit.getTime(),
+                        deposit.getDescription(), deposit.getVendor(), deposit.getAmount());
+                bw.write(formattedTrans);
+                bw.newLine();
+                bw.close();
+
             }
+
 
             //buffer write into csv file
             //write to the file if line = null
@@ -154,15 +153,12 @@ public class FinancialTracker {
                 transactions.add(payment);
                 BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME, true));
                 String line;
-                for (Transaction transaction : transactions) {
-                    String formattedTrans = String.format("%s|%s|%s|%s|%.2f", transaction.getDate(), transaction.getTime(),
-                            transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
-                    bw.write(formattedTrans);
-                    bw.newLine();
-                    bw.close();
 
-
-                }
+                String formattedTrans = String.format("%s|%s|%s|%s|%.2f", payment.getDate(), payment.getTime(),
+                        payment.getDescription(), payment.getVendor(), payment.getAmount());
+                bw.write(formattedTrans);
+                bw.newLine();
+                bw.close();
             }
 
         } catch (Exception e) {
