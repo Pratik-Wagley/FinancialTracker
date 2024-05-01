@@ -48,6 +48,7 @@ public class FinancialTracker {
                     ledgerMenu(scanner);
                     break;
                 case "X":
+                    System.out.println("Goodbye!");
                     running = false;
                     break;
                 default:
@@ -103,14 +104,14 @@ public class FinancialTracker {
             if (amount > 0) {
                 Transaction deposit = new Transaction(date, time, description, vendor, amount);
                 transactions.add(deposit);
-                BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME, true));
+                BufferedWriter bw = new BufferedWriter(new FileWriter("transactions.csv", true));
                 String line;
                 for (Transaction transaction : transactions) {
                     String formattedTrans = String.format("%s|%s|%s|%s|%.2f", transaction.getDate(), transaction.getTime(),
                             transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
                     bw.write(formattedTrans);
                     bw.newLine();
-
+                    bw.close();
 
                 }
             }
@@ -143,7 +144,6 @@ public class FinancialTracker {
         System.out.println("Enter your payment amount: ");
         double amountInput = scanner.nextDouble();
         double amount = amountInput * -1;
-
         scanner.nextLine();
 
 
@@ -159,6 +159,7 @@ public class FinancialTracker {
                             transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
                     bw.write(formattedTrans);
                     bw.newLine();
+                    bw.close();
 
 
                 }
@@ -179,7 +180,7 @@ public class FinancialTracker {
         while (running) {
             System.out.println("Ledger");
             System.out.println("Choose an option:");
-            System.out.println("A) A`ll");
+            System.out.println("A) All");
             System.out.println("D) Deposits");
             System.out.println("P) Payments");
             System.out.println("R) Reports");
@@ -203,7 +204,7 @@ public class FinancialTracker {
                 case "H":
                     running = false;
                 default:
-                    System.out.println("Invalid option");
+                    System.out.println("Invalid options");
                     break;
             }
         }
@@ -255,7 +256,7 @@ public class FinancialTracker {
                 case "1":
                     LocalDate today = LocalDate.now();
                     LocalDate startDate = today.withDayOfMonth(1);
-                    LocalDate endDate = LocalDate.now();
+                    LocalDate endDate = today.withDayOfMonth(today.lengthOfMonth());
                     filterTransactionsByDate(startDate, endDate);
                     break;
                 // Generate a report for all transactions within the current month,
@@ -265,30 +266,33 @@ public class FinancialTracker {
                     LocalDate startDate1 = lastMonth.withDayOfMonth(1);
                     LocalDate endDate1 = lastMonth.withDayOfMonth(lastMonth.lengthOfMonth());
                     filterTransactionsByDate(startDate1, endDate1);
-                    // Generate a report for all transactions within the previous month,
-                    // including the date, vendor, and amount for each transaction.
+                    break;
+                // Generate a report for all transactions within the previous month,
+                // including the date, vendor, and amount for each transaction.
                 case "3":
                     LocalDate today1 = LocalDate.now();
                     LocalDate startOfYear = today1.withDayOfYear(1);
                     LocalDate endOfYear = today1.withDayOfYear(today1.lengthOfYear());
                     filterTransactionsByDate(startOfYear, endOfYear);
-                    // Generate a report for all transactions within the current year,
-                    // including the date, vendor, and amount for each transaction.
+                    break;
+                // Generate a report for all transactions within the current year,
+                // including the date, vendor, and amount for each transaction.
 
                 case "4":
                     LocalDate lastYear = LocalDate.now().minusYears(1);
                     LocalDate startOfLastYear = lastYear.withDayOfYear(1);
                     LocalDate endOfLastYear = lastYear.withDayOfYear(lastYear.lengthOfYear());
-
                     filterTransactionsByDate(startOfLastYear, endOfLastYear);
-                    // Generate a report for all transactions within the previous year,
-                    // including the date, vendor, and amount for each transaction.
+                    break;
+                // Generate a report for all transactions within the previous year,
+                // including the date, vendor, and amount for each transaction.
                 case "5":
                     System.out.println("Enter the vendor: ");
                     String vendor = scanner.nextLine();
                     filterTransactionsByVendor(vendor);
-                    // Prompt the user to enter a vendor name, then generate a report for all transactions
-                    // with that vendor, including the date, vendor, and amount for each transaction.
+                    break;
+                // Prompt the user to enter a vendor name, then generate a report for all transactions
+                // with that vendor, including the date, vendor, and amount for each transaction.
                 case "0":
                     running = false;
                     break;
@@ -313,9 +317,9 @@ public class FinancialTracker {
                 System.out.println(formattedTrans);
                 foundTransactions = true;
             }
-            if (!foundTransactions) {
-                System.out.println("No results, please try again!");
-            }
+        }
+        if (!foundTransactions) {
+            System.out.println("No results, please try again!");
 
         }
 
@@ -334,9 +338,12 @@ public class FinancialTracker {
                         transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
                 System.out.println(formattedTrans);
                 foundVendor = true;
-            } if (!foundVendor){
-                System.out.println("No vendors with that name found, please try again!");
+
             }
+        }
+        if (!foundVendor) {
+            System.out.println("No vendors with that name found, please try again!");
+
         }
 
 
