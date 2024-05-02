@@ -119,6 +119,7 @@ public class FinancialTracker {
             //write to the file if line = null
         } catch (Exception e) {
             System.out.println("Invalid amount format. Please enter a valid number.");
+            
         }
 
 
@@ -209,9 +210,11 @@ public class FinancialTracker {
 
     private static void displayLedger() {
         System.out.println("Ledger: ");
+        System.out.printf("%-12s|%-12s|%-25s|%-12s%n", "Date", "Time", "Vendor", "Amount");
         for (Transaction transaction : transactions) {
 
-            System.out.println(transaction);
+            String fs = String.format("%-12s|%-12s|%-25s|$%-12f", transaction.getDate(), transaction.getTime(), transaction.getVendor(), transaction.getAmount());
+            System.out.println(fs);
         }
         // This method should display a table of all transactions in the `transactions` ArrayList.
         // The table should have columns for date, time, vendor, type, and amount.
@@ -219,9 +222,12 @@ public class FinancialTracker {
 
     private static void displayDeposits() {
         System.out.println("Deposit: ");
+        System.out.println( String.format("%-12s|%-12s|%-25s|%-12s", "Date", "Time", "Vendor", "Amount"));
         for (Transaction deposit : transactions) {
             if (deposit.getAmount() > 0) {
-                System.out.println(deposit);
+
+              String fs = String.format("%-12s|%-12s|%-25s|$%-12f", deposit.getDate(), deposit.getTime(), deposit.getVendor(), deposit.getAmount());
+                System.out.println(fs);
             }
             // This method should display a table of all deposits in the `transactions` ArrayList.
             // The table should have columns for date, time, vendor, and amount.
@@ -230,9 +236,11 @@ public class FinancialTracker {
 
     private static void displayPayments() {
         System.out.println("Payment: ");
+        System.out.printf("%-12s|%-12s|%-25s|%-12s", "Date", "Time", "Vendor", "Amount");
         for (Transaction payment : transactions) {
            if(payment.getAmount() < 0) {
-               System.out.println(payment);
+               String fs = String.format("%-12s|%-12s|%-25s|$%-12f", payment.getDate(), payment.getTime(), payment.getVendor(), payment.getAmount());
+               System.out.println(fs);
            }
             // This method should display a table of all payments in the `transactions` ArrayList.
             // The table should have columns for date, time, vendor, and amount.
@@ -313,7 +321,7 @@ public class FinancialTracker {
 
             if (afterDate && beforeDate) {
                 double positiveNum = Math.abs(transaction.getAmount());
-                String formattedTrans = String.format("%s|%s|%s|%s|%.2f", transaction.getDate(), transaction.getTime(),
+                String formattedTrans = String.format("%-12s|%-12s|%-30s|%-30s|$%-12f", transaction.getDate(), transaction.getTime(),
                         transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
                 System.out.println(formattedTrans);
                 foundTransactions = true;
@@ -333,9 +341,11 @@ public class FinancialTracker {
 
     private static void filterTransactionsByVendor(String vendor) {
         boolean foundVendor = false;
+        System.out.printf("%-12s|%-12s|%-30s|%-30|%-12s", "Date", "Time", "Description", "Vendor", "Amount");
+       // System.out.printf("%-12s|%-12s|%-30s|%-30s|$%-12s|, \"Date\", \"Time\", \"Description\", \"Vendor\", \"Amount\" );
         for (Transaction transaction : transactions) {
             if (vendor.equals(transaction.getVendor())) {
-                String formattedTrans = String.format("%s|%s|%s|%s|%.2f", transaction.getDate(), transaction.getTime(),
+                String formattedTrans = String.format("%-12s|%-12s|%-30s|%-30s|$%-12f", transaction.getDate(), transaction.getTime(),
                         transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
                 System.out.println(formattedTrans);
                 foundVendor = true;
