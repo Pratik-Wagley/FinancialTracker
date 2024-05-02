@@ -2,8 +2,7 @@
 
 ## Description of the Project
 
-Briefly describe what this Java console application does. Mention its purpose and who the intended users are. Explain the main functionality and what problems it aims to solve.
-This financial tracker app is created to add depopits, and payments into a csv file. It also stores all of the transactiona 
+This financial tracker app is created to add deposits, and payments into a csv file. It also stores all of the transaction history and lets you view history by date, or vendor. 
 
 ![Class Diagram](path/to/your/class_diagram.png)
 
@@ -13,6 +12,9 @@ List the user stories that guided the development of your application. Format th
 
 - As a user, I want to be able to input my data, so that the application can process it accordingly.
 - As a user, I want to receive immediate feedback, so I can understand what to do next.
+- As a developer, i would like to load my user's transactions into a file, so i can save their transaction history.
+- As a user, i would like there to be a add payment function so i can log every time i make a payment
+
 
 ## Setup
 

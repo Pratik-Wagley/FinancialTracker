@@ -85,19 +85,34 @@ public class FinancialTracker {
     }
 
     private static void addDeposit(Scanner scanner) {
-        System.out.println("Enter the date (yyyy-MM-dd):  ");
-        String dateInput = scanner.nextLine();
-        LocalDate date = LocalDate.parse(dateInput, DATE_FORMATTER);
-        System.out.println("Enter the time (HH:mm:ss) ");
-        String timeInput = scanner.nextLine();
-        System.out.println("Enter a deposit description: ");
-        String description = scanner.nextLine();
-        LocalTime time = LocalTime.parse(timeInput, TIME_FORMATTER);
-        System.out.println("Enter the vendor: ");
-        String vendor = scanner.nextLine();
-        System.out.println("Enter your deposit amount: ");
-        double amount = scanner.nextDouble();
-        scanner.nextLine();
+        LocalDate date = null;
+        String description = null;
+        LocalTime time = null;
+        String vendor = null;
+        double amount = 0;
+        boolean running = true;
+        while (running) {
+            try {
+                System.out.println("Enter the date (yyyy-MM-dd):  ");
+                String dateInput = scanner.nextLine();
+                date = LocalDate.parse(dateInput, DATE_FORMATTER);
+                System.out.println("Enter the time (HH:mm:ss) ");
+                String timeInput = scanner.nextLine();
+                System.out.println("Enter a deposit description: ");
+                description = scanner.nextLine();
+                time = LocalTime.parse(timeInput, TIME_FORMATTER);
+                System.out.println("Enter the vendor: ");
+                vendor = scanner.nextLine();
+                System.out.println("Enter your deposit amount: ");
+                amount = scanner.nextDouble();
+                scanner.nextLine();
+                running = false;
+
+            } catch (Exception e) {
+                System.out.println("Incorrect format, Please try again!");
+                running = true;
+            }
+        }
 
 
         try {
@@ -119,7 +134,7 @@ public class FinancialTracker {
             //write to the file if line = null
         } catch (Exception e) {
             System.out.println("Invalid amount format. Please enter a valid number.");
-            
+
         }
 
 
@@ -131,20 +146,30 @@ public class FinancialTracker {
     }
 
     private static void addPayment(Scanner scanner) {
-        System.out.println("Enter the date (yyyy-MM-dd):  ");
-        String dateInput = scanner.nextLine();
-        LocalDate date = LocalDate.parse(dateInput, DATE_FORMATTER);
-        System.out.println("Enter the time (HH:mm:ss) ");
-        String timeInput = scanner.nextLine();
-        LocalTime time = LocalTime.parse(timeInput, TIME_FORMATTER);
-        System.out.println("Enter a payment description: ");
-        String description = scanner.nextLine();
-        System.out.println("Enter the vendor: ");
-        String vendor = scanner.nextLine();
-        System.out.println("Enter your payment amount: ");
-        double amountInput = scanner.nextDouble();
-        double amount = amountInput * -1;
-        scanner.nextLine();
+        boolean running = true;
+        while (running) try {
+            {
+                System.out.println("Enter the date (yyyy-MM-dd):  ");
+                String dateInput = scanner.nextLine();
+                LocalDate date = LocalDate.parse(dateInput, DATE_FORMATTER);
+                System.out.println("Enter the time (HH:mm:ss) ");
+                String timeInput = scanner.nextLine();
+                LocalTime time = LocalTime.parse(timeInput, TIME_FORMATTER);
+                System.out.println("Enter a payment description: ");
+                String description = scanner.nextLine();
+                System.out.println("Enter the vendor: ");
+                String vendor = scanner.nextLine();
+                System.out.println("Enter your payment amount: ");
+                double amountInput = scanner.nextDouble();
+                double amount = amountInput * -1;
+                scanner.nextLine();
+                running = false;
+            }
+        } catch (Exception e) {
+            System.out.println("Invalid amount format. Please enter a valid number.");
+            running = true;
+        }
+    }
 
 
         try {
@@ -153,7 +178,6 @@ public class FinancialTracker {
                 Transaction payment = new Transaction(date, time, description, vendor, amount);
                 transactions.add(payment);
                 BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME, true));
-                String line;
 
                 String formattedTrans = String.format("%s|%s|%s|%s|%.2f", payment.getDate(), payment.getTime(),
                         payment.getDescription(), payment.getVendor(), payment.getAmount());
@@ -222,11 +246,11 @@ public class FinancialTracker {
 
     private static void displayDeposits() {
         System.out.println("Deposit: ");
-        System.out.println( String.format("%-12s|%-12s|%-25s|%-12s", "Date", "Time", "Vendor", "Amount"));
+        System.out.println(String.format("%-12s|%-12s|%-25s|%-12s", "Date", "Time", "Vendor", "Amount"));
         for (Transaction deposit : transactions) {
             if (deposit.getAmount() > 0) {
 
-              String fs = String.format("%-12s|%-12s|%-25s|$%-12f", deposit.getDate(), deposit.getTime(), deposit.getVendor(), deposit.getAmount());
+                String fs = String.format("%-12s|%-12s|%-25s|$%-12f", deposit.getDate(), deposit.getTime(), deposit.getVendor(), deposit.getAmount());
                 System.out.println(fs);
             }
             // This method should display a table of all deposits in the `transactions` ArrayList.
@@ -238,10 +262,10 @@ public class FinancialTracker {
         System.out.println("Payment: ");
         System.out.printf("%-12s|%-12s|%-25s|%-12s", "Date", "Time", "Vendor", "Amount");
         for (Transaction payment : transactions) {
-           if(payment.getAmount() < 0) {
-               String fs = String.format("%-12s|%-12s|%-25s|$%-12f", payment.getDate(), payment.getTime(), payment.getVendor(), payment.getAmount());
-               System.out.println(fs);
-           }
+            if (payment.getAmount() < 0) {
+                String fs = String.format("%-12s|%-12s|%-25s|$%-12f", payment.getDate(), payment.getTime(), payment.getVendor(), payment.getAmount());
+                System.out.println(fs);
+            }
             // This method should display a table of all payments in the `transactions` ArrayList.
             // The table should have columns for date, time, vendor, and amount.
         }
@@ -341,8 +365,8 @@ public class FinancialTracker {
 
     private static void filterTransactionsByVendor(String vendor) {
         boolean foundVendor = false;
-        System.out.printf("%-12s|%-12s|%-30s|%-30|%-12s", "Date", "Time", "Description", "Vendor", "Amount");
-       // System.out.printf("%-12s|%-12s|%-30s|%-30s|$%-12s|, \"Date\", \"Time\", \"Description\", \"Vendor\", \"Amount\" );
+        System.out.printf("%-12s|%-12s|%-30s|%-30s|%-12s%n", "Date", "Time", "Description", "Vendor", "Amount");
+        // System.out.printf("%-12s|%-12s|%-30s|%-30s|$%-12s|, \"Date\", \"Time\", \"Description\", \"Vendor\", \"Amount\" );
         for (Transaction transaction : transactions) {
             if (vendor.equals(transaction.getVendor())) {
                 String formattedTrans = String.format("%-12s|%-12s|%-30s|%-30s|$%-12f", transaction.getDate(), transaction.getTime(),
