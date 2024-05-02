@@ -12,13 +12,25 @@ List the user stories that guided the development of your application. Format th
 
 - As a user, I want to be able to input my data, so that the application can process it accordingly.
 - As a user, I want to receive immediate feedback, so I can understand what to do next.
-- As a developer, i would like to load my user's transactions into a file, so i can save their transaction history.
-- As a user, i would like there to be a add payment function so i can log every time i make a payment
+- As a developer, Iwould like to load my user's transactions into a file, so I can save their transaction history.
+- As a user, I would like there to be a add payment function so I can log every time i make a payment
+- As a user, I would like a function that will let me add a deposit so I can can load funds into my account successfully
+-  As a user, I would like a display function so I am able to view my transaction history
+- As a user, I would like a display ledger function so I can view all of my transactions
+- As a user, I would like a display deposits function so I can view all of my deposit transactions
+- As a user, I would like a display deposits function so I can view all of my deposit transactions
+- As a user, I would like a display payments function so I can view all of my payment transactions
+- As a user, I would like a function to view my transactions filtered by the date, so I can easily view a specific transaction
+- As a user, I would like a function to view my transactions filtered by the vendor, so I can easily view a specific transaction
+
+
 
 
 ## Setup
-
-Instructions on how to set up and run the project using IntelliJ IDEA.
+To run this code, 
+- Open the program on IntelliJ
+- Click on the green run/play button on the top right corner of the App
+- Then input into the console after it prompts for a command
 
 ### Prerequisites
 

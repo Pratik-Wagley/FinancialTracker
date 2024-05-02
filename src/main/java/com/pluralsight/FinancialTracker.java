@@ -1,6 +1,4 @@
 package com.pluralsight;
-
-import javax.sound.sampled.Line;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,6 +17,7 @@ public class FinancialTracker {
     private static final String TIME_FORMAT = "HH:mm:ss";
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(TIME_FORMAT);
+
 
     public static void main(String[] args) {
         loadTransactions(FILE_NAME);
@@ -147,54 +146,58 @@ public class FinancialTracker {
 
     private static void addPayment(Scanner scanner) {
         boolean running = true;
-        while (running) try {
-            {
+        LocalDate date = null;
+        String description = null;
+        LocalTime time = null;
+        String vendor = null;
+        double amount = 0;
+        while (running) {
+            try {
                 System.out.println("Enter the date (yyyy-MM-dd):  ");
                 String dateInput = scanner.nextLine();
-                LocalDate date = LocalDate.parse(dateInput, DATE_FORMATTER);
+                date = LocalDate.parse(dateInput, DATE_FORMATTER);
                 System.out.println("Enter the time (HH:mm:ss) ");
                 String timeInput = scanner.nextLine();
-                LocalTime time = LocalTime.parse(timeInput, TIME_FORMATTER);
+                time = LocalTime.parse(timeInput, TIME_FORMATTER);
                 System.out.println("Enter a payment description: ");
-                String description = scanner.nextLine();
+                description = scanner.nextLine();
                 System.out.println("Enter the vendor: ");
-                String vendor = scanner.nextLine();
+                vendor = scanner.nextLine();
                 System.out.println("Enter your payment amount: ");
                 double amountInput = scanner.nextDouble();
-                double amount = amountInput * -1;
+                amount = amountInput * -1;
                 scanner.nextLine();
                 running = false;
+
+            } catch (Exception e) {
+                System.out.println("Invalid format, please try again!");
             }
-        } catch (Exception e) {
-            System.out.println("Invalid amount format. Please enter a valid number.");
-            running = true;
         }
-    }
 
+            try {
 
-        try {
+                if (amount < 0) {
+                    Transaction payment = new Transaction(date, time, description, vendor, amount);
+                    transactions.add(payment);
+                    BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME, true));
 
-            if (amount < 0) {
-                Transaction payment = new Transaction(date, time, description, vendor, amount);
-                transactions.add(payment);
-                BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME, true));
+                    String formattedTrans = String.format("%s|%s|%s|%s|%.2f", payment.getDate(), payment.getTime(),
+                            payment.getDescription(), payment.getVendor(), payment.getAmount());
+                    bw.write(formattedTrans);
+                    bw.newLine();
+                    bw.close();
+                }
 
-                String formattedTrans = String.format("%s|%s|%s|%s|%.2f", payment.getDate(), payment.getTime(),
-                        payment.getDescription(), payment.getVendor(), payment.getAmount());
-                bw.write(formattedTrans);
-                bw.newLine();
-                bw.close();
+            } catch (Exception e) {
+                System.out.println("Invalid amount format. Please enter a valid number.");
             }
-
-        } catch (Exception e) {
-            System.out.println("Invalid amount format. Please enter a valid number.");
+            // This method should prompt the user to enter the date, time, vendor, and amount of a payment.
+            // The user should enter the date and time in the following format: yyyy-MM-dd HH:mm:ss
+            // The amount should be a positive number.
+            // After validating the input, a new `Payment` object should be created with the entered values.
+            // The new payment should be added to the `transactions` ArrayList.
         }
-        // This method should prompt the user to enter the date, time, vendor, and amount of a payment.
-        // The user should enter the date and time in the following format: yyyy-MM-dd HH:mm:ss
-        // The amount should be a positive number.
-        // After validating the input, a new `Payment` object should be created with the entered values.
-        // The new payment should be added to the `transactions` ArrayList.
-    }
+
 
     private static void ledgerMenu(Scanner scanner) {
         boolean running = true;
