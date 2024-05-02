@@ -3,6 +3,7 @@
 ## Description of the Project
 
 Briefly describe what this Java console application does. Mention its purpose and who the intended users are. Explain the main functionality and what problems it aims to solve.
+This financial tracker app is created to add depopits, and payments into a csv file. It also stores all of the transactiona 
 
 ![Class Diagram](path/to/your/class_diagram.png)
 

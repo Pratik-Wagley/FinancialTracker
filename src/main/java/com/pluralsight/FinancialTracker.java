@@ -199,6 +199,7 @@ public class FinancialTracker {
                     break;
                 case "H":
                     running = false;
+                    break;
                 default:
                     System.out.println("Invalid options");
                     break;
@@ -219,7 +220,9 @@ public class FinancialTracker {
     private static void displayDeposits() {
         System.out.println("Deposit: ");
         for (Transaction deposit : transactions) {
-            System.out.println(deposit);
+            if (deposit.getAmount() > 0) {
+                System.out.println(deposit);
+            }
             // This method should display a table of all deposits in the `transactions` ArrayList.
             // The table should have columns for date, time, vendor, and amount.
         }
@@ -228,7 +231,9 @@ public class FinancialTracker {
     private static void displayPayments() {
         System.out.println("Payment: ");
         for (Transaction payment : transactions) {
-            System.out.println(payment);
+           if(payment.getAmount() < 0) {
+               System.out.println(payment);
+           }
             // This method should display a table of all payments in the `transactions` ArrayList.
             // The table should have columns for date, time, vendor, and amount.
         }
