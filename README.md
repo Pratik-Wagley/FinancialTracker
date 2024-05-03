@@ -1,8 +1,8 @@
-# Project Title
+# Financial Tracker
 
 ## Description of the Project
 
-This financial tracker app is created to add deposits, and payments into a csv file. It also stores all of the transaction history and lets you view history by date, or vendor. 
+This financial tracker app is created to add deposits, and payments into a csv file. It also stores all of the transaction histories and lets you view history by date, or vendor. 
 
 ![Class Diagram](path/to/your/class_diagram.png)
 
@@ -12,10 +12,10 @@ List the user stories that guided the development of your application. Format th
 
 - As a user, I want to be able to input my data, so that the application can process it accordingly.
 - As a user, I want to receive immediate feedback, so I can understand what to do next.
-- As a developer, Iwould like to load my user's transactions into a file, so I can save their transaction history.
-- As a user, I would like there to be a add payment function so I can log every time i make a payment
-- As a user, I would like a function that will let me add a deposit so I can can load funds into my account successfully
--  As a user, I would like a display function so I am able to view my transaction history
+- As a developer, I would like to load my user's transactions into a file, so I can save their transaction history.
+- As a user, I would like there to be a add payment function, so I can log every time i make a payment
+- As a user, I would like a function that will let me add a deposit, so I can load funds into my account successfully
+- As a user, I would like a display function so I am able to view my transaction history
 - As a user, I would like a display ledger function so I can view all of my transactions
 - As a user, I would like a display deposits function so I can view all of my deposit transactions
 - As a user, I would like a display deposits function so I can view all of my deposit transactions
@@ -54,28 +54,25 @@ Follow these steps to get your application running within IntelliJ IDEA:
 
 ## Demo
 
-Include screenshots or GIFs that show your application in action. Use tools like [Giphy Capture](https://giphy.com/apps/giphycapture) to record a GIF of your application.
-
-![Application Screenshot](path/to/your/screenshot.png)
+![Application Screenshot](C:\Users\student.BOSPF3ETA4B\Downloads\giphy.gif)
 
 ## Future Work
-
-Outline potential future enhancements or functionalities you might consider adding:
-
 - Additional feature to be developed.
 - Improvement of current functionalities.
+- Possibly a Graphic user interface
 
 ## Resources
 
 List resources such as tutorials, articles, or documentation that helped you during the project.
 
-- [Java Programming Tutorial](https://www.example.com)
-- [Effective Java](https://www.example.com)
-
-
+- [Java Programming Tutorial](https://www.w3schools.com/java/)
+- [Java LocalDate](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html)
+- [Java DateTimeFormatter](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html)
 ## Thanks
 
 Express gratitude towards those who provided help, guidance, or resources:
 
-- Thank you to [Mentor's Name] for continuous support and guidance.
-- A special thanks to all teammates for their dedication and teamwork.
+- Thank you to Raymond for continuous support and guidance.
+- A special thanks to all my cohort members for their dedication and teamwork.
+- Shout out google.
+
