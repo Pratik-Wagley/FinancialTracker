@@ -196,6 +196,7 @@ public class FinancialTracker {
             System.out.println("D) Deposits");
             System.out.println("P) Payments");
             System.out.println("R) Reports");
+            System.out.println("S) Show Stats");
             System.out.println("H) Home");
 
             String input = scanner.nextLine().trim();
@@ -213,9 +214,13 @@ public class FinancialTracker {
                 case "R":
                     reportsMenu(scanner);
                     break;
+                case "S":
+                    displayStatistics();
+                    break;
                 case "H":
                     running = false;
                     break;
+
                 default:
                     System.out.println("Invalid options");
                     break;
@@ -254,6 +259,38 @@ public class FinancialTracker {
                 System.out.println(fs);
             }
         }
+    }
+
+    private static void displayStatistics() {
+        double totalDeposits = transactions.stream()
+                .filter(transaction -> transaction.getAmount() > 0)
+                .mapToDouble(Transaction::getAmount)
+                .sum();
+
+        double totalPayments = transactions.stream()
+                .filter(transaction -> transaction.getAmount() < 0)
+                .mapToDouble(Transaction::getAmount)
+                .sum();
+
+        long depositCount = transactions.stream()
+                .filter(transaction -> transaction.getAmount() > 0)
+                .count();
+
+        long paymentCount = transactions.stream()
+                .filter(transaction -> transaction.getAmount() < 0)
+                .count();
+
+        double averageDeposit = totalDeposits / depositCount;
+        double averagePayment = totalPayments / paymentCount;
+
+        double balance = totalDeposits + totalPayments;
+
+        System.out.println("=== Transaction Statistics ===");
+        System.out.println("Total Deposits: $" + totalDeposits);
+        System.out.println("Total Payments: $" + totalPayments);
+        System.out.println("Average Deposit: $" + averageDeposit);
+        System.out.println("Average Payment: $" + averagePayment);
+        System.out.println("Overall Balance: $" + balance);
     }
 
     private static void reportsMenu(Scanner scanner) {
